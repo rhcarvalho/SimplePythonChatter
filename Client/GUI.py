@@ -100,6 +100,12 @@ class GUI:
         b.show()
         self.connectButton = b
 
+        b = gtk.Button("Disconnect")
+        b.connect("clicked", self.stopService)
+        self.table.attach(b, 3, 4, 2, 3)
+        b.show()
+        self.connectButton = b
+
         b = gtk.Button("Send")
         b.connect("clicked", self.sendMessage)
         self.table.attach(b, 3, 4, 17, 18)
@@ -167,7 +173,7 @@ class GUI:
         scrolled.set_shadow_type(gtk.SHADOW_IN)
         scrolled.add(self.treeview)
 
-        self.table.attach(scrolled, 4,6, 1, 14, gtk.FILL, gtk.FILL, 20)
+        self.table.attach(scrolled, 4, 6, 1, 14, gtk.FILL, gtk.FILL, 20)
         self.table.show_all()
 
         self.userPanel = userPanel(self.treestore)
@@ -197,6 +203,7 @@ class GUI:
         self.log.log("********** CONNECTION INFO ***********", LOG_CONN)
         runReactor(host, port, self.log, alias, self.messages, self.userPanel)
 
+    ## Event function that gets called when the client has clicked the disconnect button
     def stopService(self, widget):
         self.log.log("****** DISCONNECTED FROM SERVER ******")
         stopReactor()
