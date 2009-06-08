@@ -17,25 +17,17 @@ class Log:
         self.pid = self.pid + 1
 
     def log(self, msg, style=LOG_INFO):
+        colormap = {'LOG_CONN': '"gray"',
+                    'LOG_ERR': '"red"',
+                    'LOG_INFO': '"gray"',
+                    'LOG_MSG': '"blue"',
+                    'LOG_PM_RECV': '"black"',
+                    'LOG_PM_SENT': '"blue"',
+                    'LOG_RECV': '"black"',
+                    'LOG_SEND': '"orange"',
+                    'LOG_SERVER': '"blue"'}
 
-        if style == LOG_INFO:
-            color = "gray"
-        elif style == LOG_RECV:
-            color = "black"
-        elif style == LOG_SEND:
-            color = "orange"
-        elif style == LOG_ERR:
-            color = "red"
-        elif style == LOG_CONN:
-            color = "gray"
-        elif style == LOG_SERVER:
-            color = "blue"
-        elif style == LOG_MSG:
-            color = "blue"
-        elif style == LOG_PM_SENT:
-            color = "blue"
-        elif style == LOG_PM_RECV:
-            color = "black"
+        color = colormap[style]
 
         iter = self.textbuffer.get_end_iter()
         offset = iter.get_offset()
@@ -50,10 +42,10 @@ class Log:
             self.textbuffer.insert(iter, msg + "\n")
         startiter = self.textbuffer.get_iter_at_offset(offset)
         enditer = self.textbuffer.get_end_iter()
-        tag = self.textbuffer.create_tag(None, foreground = color)
+        tag = self.textbuffer.create_tag(None, foreground=color)
         self.textbuffer.apply_tag(tag, startiter, enditer)
 
-        self.view.scroll_to_mark(self.textbuffer.get_insert(),0)
+        self.view.scroll_to_mark(self.textbuffer.get_insert(), 0)
 
         self.dumplog()
 
