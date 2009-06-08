@@ -1,0 +1,5 @@
+Hi!
+
+This is a test for the file bot written for Python LAN Chat
+
+Test this: ' ' '' ' " " " ' ; ; : . . , #@!$! %52#% #^#57 $*
