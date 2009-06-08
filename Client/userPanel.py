@@ -20,7 +20,7 @@ class userPanel:
                 go = True
                 while go == True:
                     if a == None:
-                        go = False;
+                        go = False
                     if self.treestore.get_value(a, 0) == "  " + User.name:
                         self.treestore.remove(a)
                         break

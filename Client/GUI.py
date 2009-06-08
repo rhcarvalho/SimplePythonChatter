@@ -24,7 +24,7 @@ class GUI:
 
     ##The constructor class
     def __init__(self, msgObject):
-        self.messages = msgObject;
+        self.messages = msgObject
         self.toggleDisabled = []
 
         #initiate the container window
@@ -145,7 +145,7 @@ class GUI:
     def makeTreeViews(self):
         self.treestore = gtk.TreeStore(str)
         self.tm = gtk.TreeModelSort(self.treestore)
-        self.tm.set_sort_column_id(0, gtk.SORT_ASCENDING);
+        self.tm.set_sort_column_id(0, gtk.SORT_ASCENDING)
 
         self.treeview = gtk.TreeView(self.tm);
         self.tvcolumn = gtk.TreeViewColumn('Online Users')
@@ -163,14 +163,14 @@ class GUI:
         self.tvcolumn.set_sort_column_id(0)
 
         scrolled = gtk.ScrolledWindow()
-        scrolled.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        scrolled.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scrolled.set_shadow_type(gtk.SHADOW_IN)
         scrolled.add(self.treeview)
 
         self.table.attach(scrolled, 4,6, 1, 14, gtk.FILL, gtk.FILL, 20)
         self.table.show_all()
 
-        self.userPanel = userPanel(self.treestore);
+        self.userPanel = userPanel(self.treestore)
 
     ## Gets called when the user double clicked someone from the user panel
     def treeviewCallback(self, treeview, event, data=None):
@@ -191,12 +191,15 @@ class GUI:
         host = self.hostText.get_text()
         port = int(self.portText.get_text())
         alias = self.aliasText.get_text()
-        self.log.log("******** PRE-CONNECTION INFO *********");
+        self.log.log("******** PRE-CONNECTION INFO *********")
         self.log.log(APP_NAME + " is trying to connect to " + host + " at port " + str(port))
         self.log.log("You are logging in under the name " + alias + "\n")
-        self.log.log("********** CONNECTION INFO ***********", LOG_CONN);
+        self.log.log("********** CONNECTION INFO ***********", LOG_CONN)
         runReactor(host, port, self.log, alias, self.messages, self.userPanel)
 
+    def stopService(self, widget):
+        self.log.log("****** DISCONNECTED FROM SERVER ******")
+        stopReactor()
 
     ## Event function that gets called when the client has clicked the send button
     def sendMessage(self, widget):
@@ -217,11 +220,11 @@ class GUI:
 
     def updateMap(self, widget):
         self.log.log("Looking for updates...")
-        self.messages.addmsg("/COMMAND GAME");
+        self.messages.addmsg("/COMMAND GAME")
 
     def joinGame(self, widget):
         self.log.log("Joining game...")
-        self.messages.addmsg("/COMMAND JOIN GAME");
+        self.messages.addmsg("/COMMAND JOIN GAME")
 
 def startGUI(msgObject):
     GUI(msgObject)
