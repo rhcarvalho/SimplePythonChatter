@@ -1,10 +1,8 @@
 #file clientVars.py
 
 #Global Application Variables
-APP_NAME = "Python LAN Chat Client"
-APP_VERSION = "1.1"
-APP_HOME = "http://www.onderstekop.nl/coding/p10/"
-APP_UPDATE = "http://www.onderstekop.nl/coding/update.php"
+APP_NAME = "Simple Python Chatter"
+APP_VERSION = "0.1"
 
 REACTOR_RUNNING = False
 CHECK_FOR_MESSAGES_TO_SEND_TIMEOUT = 1
