@@ -217,7 +217,8 @@ class GUI:
 
     ## Function that gets called when the GUI is exited
     def close_application(self, widget):
-        stopReactor()
+        if REACTOR_RUNNING:
+            stopReactor()
         gtk.main_quit()
 
     def userImage(self, column, cell, model, iter):

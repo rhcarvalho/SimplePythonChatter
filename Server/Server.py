@@ -270,8 +270,6 @@ def addText(textbuffer, text, log=LOG_INFO):
     tag = textbuffer.create_tag(None, foreground = color)
     textbuffer.apply_tag(tag, startiter, enditer)
 
-    scroll_to_mark(self.textbuffer.get_insert(), 0)
-
 
 class GUI:
     def startService(self, widget, porttext, textbuffer, wtextbuffer):

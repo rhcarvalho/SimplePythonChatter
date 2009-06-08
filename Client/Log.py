@@ -17,15 +17,15 @@ class Log:
         self.pid = self.pid + 1
 
     def log(self, msg, style=LOG_INFO):
-        colormap = {'LOG_CONN': '"gray"',
-                    'LOG_ERR': '"red"',
-                    'LOG_INFO': '"gray"',
-                    'LOG_MSG': '"blue"',
-                    'LOG_PM_RECV': '"black"',
-                    'LOG_PM_SENT': '"blue"',
-                    'LOG_RECV': '"black"',
-                    'LOG_SEND': '"orange"',
-                    'LOG_SERVER': '"blue"'}
+        colormap = {LOG_CONN: "gray",
+                    LOG_ERR: "red",
+                    LOG_INFO: "gray",
+                    LOG_MSG: "blue",
+                    LOG_PM_RECV: "black",
+                    LOG_PM_SENT: "blue",
+                    LOG_RECV: "black",
+                    LOG_SEND: "orange",
+                    LOG_SERVER: "blue"}
 
         color = colormap[style]
 
