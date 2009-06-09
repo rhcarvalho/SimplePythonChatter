@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #file User.py
 
 class User:

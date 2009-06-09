@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #file Users.py
 from User import User
 
