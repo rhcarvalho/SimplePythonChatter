@@ -6,11 +6,12 @@ from clientVars import *
 from Messages import Messages
 from urllib import quote_plus, unquote_plus
 from Users import Users, User
+from clientVars import _
 
 class clientProtocol(Protocol):
 
     def connectionMade(self):
-        self.factory.log.log("You are connected to the server!\n", LOG_CONN)
+        self.factory.log.log(_("You are connected to the server!\n"), LOG_CONN)
         self.init = True
         self.message = 0
         self.pm = 0
@@ -20,7 +21,7 @@ class clientProtocol(Protocol):
 
     def dataReceived(self, data):
         if self.init:
-            self.factory.log.log("********** SERVER MESSAGE **********", LOG_SERVER)
+            self.factory.log.log(_("********** SERVER MESSAGE **********"), LOG_SERVER)
             block = data.split("\r\n\r\n")
             welcome = block[0]
             self.factory.log.log(welcome, LOG_SERVER)
@@ -33,13 +34,13 @@ class clientProtocol(Protocol):
                     self.factory.Users.usersEver = params[2]
                     self.factory.Users.usersOnline = params[3]
                     self.factory.Users.addUser(params[1], self.factory.alias)
-            self.factory.log.log("There are currently " + params[3] + " users online. This server had " + params[2] + " logins\n", LOG_SERVER)
-            self.factory.log.log("********** JOINING CHAT **********", LOG_INFO)
+            self.factory.log.log(_("There are currently %s users online. This server had %s logins\n") % (params[3], params[2]), LOG_SERVER)
+            self.factory.log.log(_("********** JOINING CHAT **********"), LOG_INFO)
             self.sendMsg("USER "  + self.factory.alias)
             self.init = False
         else:
             if data[0:7] == "USER OK":
-                self.factory.log.log("You've succesfully authenticated yourself on the server\n", LOG_INFO)
+                self.factory.log.log(_("You've succesfully authenticated yourself on the server\n"), LOG_INFO)
                 self.sendMsg("JOIN CHAT")
             elif data[0:9] == "JOIN CHAT":
                 block = data.split("\r\n\r\n")
@@ -52,7 +53,7 @@ class clientProtocol(Protocol):
                 try:
                     name = params[4]
                     name = name.split("\n")
-                    self.factory.log.log(name[0] + " joined the chat!" , LOG_RECV)
+                    self.factory.log.log(_("%s joined the chat!") % (name[0],), LOG_RECV)
                     if name[0] == self.factory.alias:
                         self.sendMsg("USERLIST")
                 except:
@@ -81,7 +82,7 @@ class clientProtocol(Protocol):
                     ID = params[2]
                     name = self.factory.Users.getName(ID)
                     if name != "Unknown User":
-                        self.factory.log.log(name + " left the premises", LOG_RECV)
+                        self.factory.log.log(_("%s left the premises") % (name,), LOG_RECV)
                         self.factory.Users.removeUser(ID)
                 except:
                     params = ""
@@ -143,7 +144,7 @@ class clientProtocol(Protocol):
                 self.factory.log.log("[" + str(self.factory.pid) + "] " +data, LOG_ERR)
 
     def connectionLost(self, reason):
-        self.factory.log.log("\n\n===Lost connection to the server ===", LOG_CONN)
+        self.factory.log.log(_("\n\n===Lost connection to the server ==="), LOG_CONN)
         self.factory.Users.clear()
 
     def sendMessages(self):
@@ -187,7 +188,7 @@ class clientProtocolFactory(ClientFactory):
         self.Users.addUser("1", alias)
 
     def clientConnectionFailed(self, reason, bla):
-        self.log.log("Couldn't connect...\n", LOG_ERR)
+        self.log.log(_("Couldn't connect...\n"), LOG_ERR)
 
 def runReactor(host, port, log, alias, msgObject, userPanelObject):
     f = clientProtocolFactory(log, alias, msgObject, userPanelObject)
