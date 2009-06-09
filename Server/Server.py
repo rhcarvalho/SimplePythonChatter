@@ -11,8 +11,8 @@ from User import User
 from Users import Users
 
 #APP VARIABLES
-APP_NAME = "Python LAN Chat Server"
-APP_VERSION = "1.1"
+APP_NAME = "Simple Python Chatter Server"
+APP_VERSION = "0.1"
 
 #LOG Variables
 LOG_INFO = 1
