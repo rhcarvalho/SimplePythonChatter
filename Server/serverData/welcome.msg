@@ -1,4 +1,4 @@
-Python LAN Chat version 1.1
+Simple Python Chatter version 0.1
 
-Written by Bart Spaans
-http://www.onderstekop.nl/
+Written by Rodolfo Carvalho
+http://github.com/rhcarvalho/SimplePythonChatter
