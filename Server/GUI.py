@@ -39,10 +39,6 @@ class GUI:
         label.set_justify(gtk.JUSTIFY_LEFT)
         table.attach(label, 0, 1, 1,2)
         label.show()
-        label = gtk.Label(_("Game Map:"))
-        label.set_justify(gtk.JUSTIFY_LEFT)
-        table.attach(label, 0, 1, 2, 3)
-        label.show()
 
         f=open(PATH_WELCOME_MSG)
         welcomemsg = f.read()
@@ -64,11 +60,6 @@ class GUI:
         table.attach(porttext, 1,2,0,1)
         porttext.show()
 
-        map = gtk.Entry()
-        map.set_text(PATH_DEFAULT_MAP)
-        table.attach(map, 1,2,2,3)
-        map.show()
-
         sw =gtk.ScrolledWindow()
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
         sw.set_shadow_type(gtk.SHADOW_IN)
@@ -84,11 +75,6 @@ class GUI:
         button = gtk.Button(_("Start Service"))
         button.connect("clicked", self.startService, porttext, textbuffer, textbufferWelcome)
         table.attach(button, 2,3,0,1, gtk.FILL,0)
-        button.show()
-
-        button = gtk.Button(_("Browse"))
-        button.connect("clicked", self.startService, porttext, textbuffer)
-        table.attach(button, 2,3,2,3, gtk.FILL,0)
         button.show()
 
         frame1 = gtk.Frame(_("Server options"))
