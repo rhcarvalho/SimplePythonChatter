@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#file Users.py
 from User import User
 
 
@@ -7,7 +6,7 @@ class Users:
 
     def __init__(self):
         self.numUser = 0
-        self.users =[]
+        self.users = []
         self.cID = 1000
 
     def addUser(self):

@@ -40,7 +40,7 @@ class GUI:
         table.attach(label, 0, 1, 1,2)
         label.show()
 
-        f=open(PATH_WELCOME_MSG)
+        f = open(PATH_WELCOME_MSG)
         welcomemsg = f.read()
         f.close()
 
@@ -53,11 +53,11 @@ class GUI:
         welcome.add(textview)
         welcome.show()
         textview.show()
-        table.attach(welcome, 1,4, 1, 2,gtk.FILL ,gtk.FILL,10,0)
+        table.attach(welcome, 1, 4, 1, 2, gtk.FILL, gtk.FILL, 10, 0)
 
         porttext = gtk.Entry(6)
         porttext.set_text("2727")
-        table.attach(porttext, 1,2,0,1)
+        table.attach(porttext, 1, 2, 0, 1)
         porttext.show()
 
         sw =gtk.ScrolledWindow()
@@ -74,24 +74,24 @@ class GUI:
 
         button = gtk.Button(_("Start Service"))
         button.connect("clicked", self.startService, porttext, textbuffer, textbufferWelcome)
-        table.attach(button, 2,3,0,1, gtk.FILL,0)
+        table.attach(button, 2, 3, 0, 1, gtk.FILL, 0)
         button.show()
 
         frame1 = gtk.Frame(_("Server options"))
         frame1.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         frame1.set_label_align(0.0, 0.0)
-        table.attach(frame1,0,4,0,3)
+        table.attach(frame1, 0, 4, 0, 3)
         frame1.show()
 
 
         frame2 = gtk.Frame(_("Log options"))
         frame2.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         frame2.set_label_align(1.0, 0.0)
-        table.attach(frame2, 4,7,0,3)
+        table.attach(frame2, 4, 7, 0, 3)
         frame2.show()
 
         label = gtk.Label(_("Display options:"))
-        table.attach(label, 4,5, 0,1)
+        table.attach(label, 4, 5, 0, 1)
         label.show()
 
         check1 = gtk.CheckButton("[INFO]")
@@ -100,12 +100,12 @@ class GUI:
         check4 = gtk.CheckButton("[CONN]")
         check5 = gtk.CheckButton("[ERR]")
         check6 = gtk.CheckButton("[SERVER]")
-        table.attach(check1, 5,6,0,1)
-        table.attach(check2, 6,7,0,1)
-        table.attach(check3, 5,6,1,2)
-        table.attach(check4, 6,7,1,2)
-        table.attach(check5, 5,6,2,3)
-        table.attach(check6, 6,7,2,3)
+        table.attach(check1, 5, 6, 0, 1)
+        table.attach(check2, 6, 7, 0, 1)
+        table.attach(check3, 5, 6, 1, 2)
+        table.attach(check4, 6, 7, 1, 2)
+        table.attach(check5, 5, 6, 2, 3)
+        table.attach(check6, 6, 7, 2, 3)
         check1.show()
         check2.show()
         check3.show()
@@ -115,7 +115,7 @@ class GUI:
 
         self.statusbar = gtk.Statusbar()
         self.context_id = self.statusbar.get_context_id("Users")
-        table.attach(self.statusbar, 0, 6, 10,11)
+        table.attach(self.statusbar, 0, 6, 10, 11)
         self.statusbar.show()
 
         table.show()

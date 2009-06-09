@@ -9,6 +9,7 @@ from Messages import Messages
 from urllib import quote_plus, unquote_plus
 from Users import Users, User
 
+
 class clientProtocol(Protocol):
 
     def connectionMade(self):
@@ -176,6 +177,7 @@ class clientProtocol(Protocol):
         self.factory.pid += 1
         self.transport.write(msg + "\r\n\r\n")
 
+
 class clientProtocolFactory(ClientFactory):
 
     protocol = clientProtocol
@@ -191,10 +193,12 @@ class clientProtocolFactory(ClientFactory):
     def clientConnectionFailed(self, reason, bla):
         self.log.log(_("Couldn't connect...\n"), LOG_ERR)
 
+
 def runReactor(host, port, log, alias, msgObject, userPanelObject):
     f = clientProtocolFactory(log, alias, msgObject, userPanelObject)
     reactor.connectTCP(host, port, f)
     reactor.run()
+
 
 def stopReactor():
     reactor.stop()

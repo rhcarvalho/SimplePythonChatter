@@ -23,14 +23,14 @@ class RPG(Protocol):
         IP = self.transport.getPeer()
         IP = IP.host
         welcome = self.factory.welcome
-        msg = "UID " + str(ID) + " " + str(registeredUsers) + " " + str(onlineUsers) + " " + IP
+        msg = "UID %s %s %s %s" % (ID, registeredUsers, onlineUsers, IP)
         msg2 = _("Currently there are %s users online and %s known users. %s Last user connected: %s (%s)") % (onlineUsers, registeredUsers, time.ctime(), ID, IP)
         welcome += "\r\n\r\n" + msg +"\r\n"
         self.transport.write(welcome)
 
         messageid = self.factory.statusbar[0].push(self.factory.statusbar[1], msg2)
 
-        addText(self.factory.textbuffer,welcome, LOG_SEND)
+        addText(self.factory.textbuffer, welcome, LOG_SEND)
 
         self.factory.clients.append(self)
         self.broadcast("CONN UID " + str(ID))
@@ -59,7 +59,7 @@ class RPG(Protocol):
                             self.name = name
                             addText(self.factory.textbuffer, "UID" + str(self.ID) + " changed his/her name to "  + name, LOG_SERVER)
                             self.broadcast("CONN UID " + str(self.ID) + " " + name)
-                            self.init= False
+                            self.init = False
                         else:
                             addText(self.factory.textbuffer, "UID" + str(self.ID) + " USER AlreadyExists " + name, LOG_ERR)
                             self.transport.write("USER AlreadyExists " + name + "\r\n")
@@ -85,7 +85,7 @@ class RPG(Protocol):
         self.broadcast("EXIT UID " + str(ID))
         self.factory.clients.remove(self)
 
-    def broadcast(self, msg, broadcast = BROADCAST_EVERYBODY, to =""):
+    def broadcast(self, msg, broadcast=BROADCAST_EVERYBODY, to=""):
         if broadcast == BROADCAST_EVERYBODY:
             for c in self.factory.clients:
                 c.message(msg)
@@ -111,7 +111,7 @@ class RPG(Protocol):
         if command == "QUIT":
             self.transport.loseConnection()
         elif command == "USERS":
-            ID =self.ID
+            ID = self.ID
             onlineUsers = self.factory.users.numUser
             registeredUsers = self.factory.users.regUsers()
 
@@ -164,7 +164,7 @@ class RPG(Protocol):
             addText(self.factory.textbuffer, self.name + " " +msg, LOG_SEND)
         elif command == "MSG":
             try:
-                serv =dataSpaceSplit[1].upper()
+                serv = dataSpaceSplit[1].upper()
                 msg = dataSpaceSplit[2]
 
                 if serv == "CHAT":
@@ -187,7 +187,7 @@ class RPG(Protocol):
         else:
             msg = "FAULT Unknown command " +  command
             self.transport.write(msg + "\r\n")
-            addText(self.factory.textbuffer, self.name + " " +msg, LOG_SEND)
+            addText(self.factory.textbuffer, self.name + " " + msg, LOG_SEND)
 
 
 def addText(textbuffer, text, log=LOG_INFO):
@@ -221,14 +221,14 @@ def addText(textbuffer, text, log=LOG_INFO):
     startiter = textbuffer.get_iter_at_offset(startiter)
     enditer = textbuffer.get_end_iter()
 
-    tag = textbuffer.create_tag(None, foreground = color)
+    tag = textbuffer.create_tag(None, foreground=color)
     textbuffer.apply_tag(tag, startiter, enditer)
 
 
 def startService(textbuffer,port, welcome, statusbar):
     addText(textbuffer, APP_NAME, LOG_INFO)
     addText(textbuffer, _("Version ") + APP_VERSION, LOG_INFO)
-    addText(textbuffer, _("Attempting to start server at port ") +str(port)+ "\n", LOG_INFO)
+    addText(textbuffer, _("Attempting to start server at port ") + str(port) + "\n", LOG_INFO)
     addText(textbuffer, _("Creating Factory"), LOG_INFO)
 
     factory = Factory()

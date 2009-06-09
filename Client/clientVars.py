@@ -21,6 +21,7 @@ LOG_PM_SENT = 9
 
 LANG = 'pt-br'
 
+
 def _(message):
     translations = {
 "You are connected to the server!\n": u"Você conectou ao servidor!\n",
