@@ -1,5 +1,5 @@
-In order to run Python LAN Chat properly you will need:
-		
+In order to run Simple Python Chatter properly you will need:
+
 	Python - http://www.python.org/
 	PyGTK - http://www.pygtk.org/
 	Twisted - http://twistedmatrix.com/trac/
