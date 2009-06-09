@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #file Messages.py
 class Messages:
     def __init__(self):

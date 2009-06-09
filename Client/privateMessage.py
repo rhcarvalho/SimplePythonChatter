@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 #GUI libraries;
 #See http://www.pygtk.org/ for documentation
 import pygtk
 pygtk.require('2.0')
 import gtk
+
+from clientVars import _
 
 
 class privateMessage:
@@ -17,7 +20,7 @@ class privateMessage:
         self.window.set_icon(gtk.gdk.pixbuf_new_from_file_at_size("user_icon.gif", 14, 16))
         self.window.set_resizable(True)
         self.window.connect("destroy", self.closeWindow)
-        self.window.set_title("Private conversation with " + name)
+        self.window.set_title(_("Private conversation with %s") % (name,))
         self.window.set_border_width(20)
         self.window.show()
 
@@ -34,7 +37,7 @@ class privateMessage:
 
 
     def makeLabels(self):
-        labels = ["To:", "Chat:", "Message:"]
+        labels = [_("To:"), _("Chat:"), _("Message:")]
         a = 0
         for label in labels:
             l = gtk.Label(label)
@@ -78,7 +81,7 @@ class privateMessage:
         f.show()
 
     def makeButtons(self):
-        b = gtk.Button("Send")
+        b = gtk.Button(_("Send"))
         b.connect("clicked", self.sendMessage)
         self.table.attach(b, 4, 5, 4, 5)
         b.show()
@@ -94,7 +97,7 @@ class privateMessage:
             self.msgText.set_text("")
 
     def closeWindow(self, widget):
-        print "Exiting private message"
+        print _("Exiting private message")
 
     def openWindow(self, widget, event, name):
         print "PM" + name

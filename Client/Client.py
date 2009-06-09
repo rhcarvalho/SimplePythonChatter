@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 #    Python Game and Chat client
 #
@@ -10,10 +11,11 @@
 #
 
 from clientVars import *
+from clientVars import _
 from GUI import *
 from Messages import *
 
-print APP_NAME, APP_VERSION, "started...\n"
+print APP_NAME, APP_VERSION, _("started...\n")
 
 msg = Messages()
 startGUI(msg)

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+from clientVars import _
+
+
 class userPanel:
 
     def __init__(self, treestore):
@@ -9,8 +13,8 @@ class userPanel:
             if int(User.ID) >= 1000:
                 self.IDs.append(User.ID)
                 name = self.treestore.append(None, ["  " + User.name])
-                self.treestore.append(name, [" ID: " + User.ID])
-                self.treestore.append(name, [" Known Since: " + str(User.knownsince)])
+                self.treestore.append(name, [_(" ID: ") + User.ID])
+                self.treestore.append(name, [_(" Known Since: ") + str(User.knownsince)])
 
     def remove(self, User):
         for ID in self.IDs:

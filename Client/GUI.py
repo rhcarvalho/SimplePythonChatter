@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## Python Chat and Game server client
 ## Written by Bart Spaans, Sep 2007
 ## See http://www.onderstekop.nl/coding/ for more scripts
@@ -13,6 +14,7 @@ from clientProtocol import *
 
 #Global macros
 from clientVars import *
+from clientVars import _
 
 from Log import *
 from userPanel import userPanel
@@ -51,7 +53,7 @@ class GUI:
 
     ##Adds a number of labels to the widget table
     def makeLabels(self):
-        labels = ["Server:", "Port:", "Alias:"]
+        labels = [_("Server:"), _("Port:"), _("Alias:")]
         a = 1
         for label in labels:
             l = gtk.Label(label)
@@ -94,19 +96,19 @@ class GUI:
 
     ## Add and display Connect and Send buttons
     def makeButtons(self):
-        b = gtk.Button("Connect")
+        b = gtk.Button(_("Connect"))
         b.connect("clicked", self.startService)
         self.table.attach(b, 2, 3, 2, 3)
         b.show()
         self.connectButton = b
 
-        b = gtk.Button("Disconnect")
+        b = gtk.Button(_("Disconnect"))
         b.connect("clicked", self.stopService)
         self.table.attach(b, 3, 4, 2, 3)
         b.show()
         self.connectButton = b
 
-        b = gtk.Button("Send")
+        b = gtk.Button(_("Send"))
         b.connect("clicked", self.sendMessage)
         self.table.attach(b, 3, 4, 17, 18)
         b.show()
@@ -130,19 +132,19 @@ class GUI:
 
     ##Adds a little layout frames
     def makeFrames(self):
-        f = gtk.Frame("Client options")
+        f = gtk.Frame(_("Client options"))
         f.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         f.set_label_align(0.0, 0.0)
         self.table.attach(f, 0, 4, 0, 5)
         f.show()
 
-        f = gtk.Frame("Chat")
+        f = gtk.Frame(_("Chat"))
         f.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         f.set_label_align(0.0,0.0)
         self.table.attach(f, 0, 4, 5, 18)
         f.show()
 
-        f = gtk.Frame("Users")
+        f = gtk.Frame(_("Users"))
         f.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         f.set_label_align(0.0,0.0)
         self.table.attach(f, 4, 6, 0, 18)
@@ -154,7 +156,7 @@ class GUI:
         self.tm.set_sort_column_id(0, gtk.SORT_ASCENDING)
 
         self.treeview = gtk.TreeView(self.tm);
-        self.tvcolumn = gtk.TreeViewColumn('Online Users')
+        self.tvcolumn = gtk.TreeViewColumn(_('Online Users'))
         self.treeview.append_column(self.tvcolumn)
 
         self.cell = gtk.CellRendererText()
@@ -188,7 +190,7 @@ class GUI:
             (model, treeiter) = treeselection.get_selected()
             treeiter = self.tm.convert_iter_to_child_iter(None, treeiter)
             name = self.treestore.get_value(treeiter,0)
-            if name[0:5] != " ID: " and name[0:14] != " Known Since: ":
+            if name[0:5] != _(" ID: ") and name[0:14] != _(" Known Since: "):
                 pm = privateMessage(str(name[2:]), self.messages, self.log)
 
 
@@ -197,15 +199,15 @@ class GUI:
         host = self.hostText.get_text()
         port = int(self.portText.get_text())
         alias = self.aliasText.get_text()
-        self.log.log("******** PRE-CONNECTION INFO *********")
-        self.log.log(APP_NAME + " is trying to connect to " + host + " at port " + str(port))
-        self.log.log("You are logging in under the name " + alias + "\n")
-        self.log.log("********** CONNECTION INFO ***********", LOG_CONN)
+        self.log.log(_("******** PRE-CONNECTION INFO *********"))
+        self.log.log(_("%s is trying to connect to %s at port %s") % (APP_NAME, host, port))
+        self.log.log(_("You are logging in under the name %s\n") % (alias,))
+        self.log.log(_("********** CONNECTION INFO ***********"), LOG_CONN)
         runReactor(host, port, self.log, alias, self.messages, self.userPanel)
 
     ## Event function that gets called when the client has clicked the disconnect button
     def stopService(self, widget):
-        self.log.log("****** DISCONNECTED FROM SERVER ******")
+        self.log.log(_("****** DISCONNECTED FROM SERVER ******"))
         stopReactor()
 
     ## Event function that gets called when the client has clicked the send button

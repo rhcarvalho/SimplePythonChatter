@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 from twisted.internet.protocol import Protocol, ClientFactory
 from twisted.internet import gtk2reactor
 gtk2reactor.install()
 from twisted.internet import reactor, defer
 from clientVars import *
+from clientVars import _
 from Messages import Messages
 from urllib import quote_plus, unquote_plus
 from Users import Users, User
-from clientVars import _
 
 class clientProtocol(Protocol):
 

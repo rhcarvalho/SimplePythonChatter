@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
 import datetime
 import time
+
+from clientVars import _
+
 
 class Users:
 
@@ -18,7 +22,7 @@ class Users:
         for user in self.users:
             if user.ID == ID:
                 return user.name
-        return "Unknown User (" + ID + ")"
+        return _("Unknown User (%s)") % (ID,)
 
     def removeUser(self, ID):
         name = ""
