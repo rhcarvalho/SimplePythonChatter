@@ -15,7 +15,6 @@ LOG_SERVER = 6
 #BROADCAST Message variables
 BROADCAST_EVERYBODY = 1
 BROADCAST_CHAT = 2
-BROADCAST_GAME = 3
 BROADCAST_PM = 4
 
 #PATHs
@@ -23,8 +22,7 @@ if LANG == 'pt-br':
     PATH_WELCOME_MSG = "serverData/welcome.msg.pt-br"
 else:
     PATH_WELCOME_MSG = "serverData/welcome.msg"
-PATH_DEFAULT_MAP_NAME = "Militia"
-PATH_DEFAULT_MAP = "serverData/default.map"
+
 
 def _(message):
     translations = {

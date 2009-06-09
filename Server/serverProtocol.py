@@ -37,7 +37,6 @@ class RPG(Protocol):
 
         self.ID = ID
         self.init = True
-        self.inGAME = False
         self.inCHAT = False
 
     def dataReceived(self, data):
@@ -90,10 +89,6 @@ class RPG(Protocol):
         if broadcast == BROADCAST_EVERYBODY:
             for c in self.factory.clients:
                 c.message(msg)
-        elif broadcast == BROADCAST_GAME:
-            for c in self.factory.clients:
-                if c.inGAME:
-                    c.message(msg)
         elif broadcast == BROADCAST_CHAT:
             for c in self.factory.clients:
                 if c.inCHAT:
@@ -147,27 +142,13 @@ class RPG(Protocol):
             self.transport.write(msg)
             addText(self.factory.textbuffer, self.name + " " +msg + "\r\n", LOG_SEND)
         elif command == "SERV":
-            msg = "SERV\r\nChat: main chat room and private messaging\r\nGame: retreive game maps"
-            self.transport.write(msg + "\r\n\r\n")
-            addText(self.factory.textbuffer, self.name + " " +msg, LOG_SEND)
-        elif command == "GAME":
-            nOU = 1;
-            numberOfUsers = 5;
-            if nOU < numberOfUsers:
-                msg = "GAME OK " + PATH_DEFAULT_MAP_NAME
-            else:
-                msg = "GAME Fault TooManyUsers"
+            msg = "SERV\r\nChat: main chat room and private messaging"
             self.transport.write(msg + "\r\n\r\n")
             addText(self.factory.textbuffer, self.name + " " +msg, LOG_SEND)
         elif command == "JOIN":
             try:
                 serv = dataSpaceSplit[1].upper()
-                if serv == "GAME":
-                    self.inGAME = True
-                    self.transport.write("JOIN GAME OK 20 20")
-                    self.broadcast("JOIN GAME UID " + str(self.ID) + " " +self.name, BROADCAST_GAME)
-                    addText(self.factory.textbuffer, self.name + " joined the game", LOG_SERVER)
-                elif serv == "CHAT":
+                if serv == "CHAT":
                     self.inCHAT = True
                     self.broadcast("JOIN CHAT UID " + str(self.ID) + " " +self.name, BROADCAST_CHAT)
                     addText(self.factory.textbuffer, self.name + " joined the chat", LOG_SERVER)
@@ -186,14 +167,7 @@ class RPG(Protocol):
                 serv =dataSpaceSplit[1].upper()
                 msg = dataSpaceSplit[2]
 
-                if serv == "GAME":
-                    if self.inGAME:
-                        self.broadcast("MSG GAME UID " + str(self.ID) + " " + msg + "\r\n", BROADCAST_GAME)
-                        addText(self.factory.textbuffer, self.name + " is sending a GAME message: " + msg, LOG_INFO)
-                    else:
-                        self.transport.write("MSG Fault NotInGame\r\n")
-                        addText(self.factory.textbuffer, self.name + " tried to send a GAME message but wasn't in a GAME", LOG_ERR)
-                elif serv == "CHAT":
+                if serv == "CHAT":
                     if self.inCHAT:
                         self.broadcast("MSG CHAT UID " + str(self.ID) + " " + msg + "\r\n", BROADCAST_CHAT)
                         addText(self.factory.textbuffer, self.name + " is sending a CHAT message: " + msg, LOG_INFO)
