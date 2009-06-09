@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import time
 import pygtk
 pygtk.require('2.0')
@@ -13,6 +14,7 @@ from Users import Users
 #APP VARIABLES
 APP_NAME = "Simple Python Chatter Server"
 APP_VERSION = "0.1"
+LANG = 'pt-br'
 
 #LOG Variables
 LOG_INFO = 1
@@ -29,9 +31,37 @@ BROADCAST_GAME = 3
 BROADCAST_PM = 4
 
 #PATHs
-PATH_WELCOME_MSG = "serverData/welcome.msg"
+if LANG == 'pt-br':
+    PATH_WELCOME_MSG = "serverData/welcome.msg.pt-br"
+else:
+    PATH_WELCOME_MSG = "serverData/welcome.msg"
 PATH_DEFAULT_MAP_NAME = "Militia"
 PATH_DEFAULT_MAP = "serverData/default.map"
+
+def _(message):
+    translations = {
+"Established connection UID %s\n": u"Conexão estabelecida com UID %s\n",
+"Currently there are %s users online and %s known users. %s Last user connected: %s (%s)": u"Existem %s usuários online e %s usuários conhecidos. %s Último usuário conectado: %s (%s)",
+"Currently there are %s users online and %s known users. %s Last user disconnected: %s (%s)": u"Existem %s usuários online e %s usuários conhecidos. %s Último usuário desconectado: %s (%s)",
+"Lost connection: \n": u"Conexão perdida: \n",
+"Port:": u"Porta:",
+"Welcome message:": u"Mensagem inicial:",
+"Start Service": u"Iniciar Serviço",
+"Browse": u"Procurar",
+"Server options": u"Opções do Servidor",
+"Log options": u"Opções de Log",
+"Display options:": u"Opções de exibição:",
+"Version ": u"Versão ",
+"Attempting to start server at port ": u"Tentando iniciar servidor na porta ",
+"Creating Factory": u"Iniciando Protocolo",
+"Saving welcome message...": u"Salvando mensagem inicial...",
+"Setting up Users datastructure": u"Configurando estrutura de usuários",
+"Listening for incoming connections...": u"Aguardando conexões de entrada...",
+}
+
+    if LANG == 'pt-br':
+        return translations.get(message, message)
+    return message
 
 
 class RPG(Protocol):
@@ -40,13 +70,13 @@ class RPG(Protocol):
         ID = self.factory.users.addUser()
         onlineUsers = self.factory.users.numUser
         registeredUsers = self.factory.users.regUsers()
-        addText(self.factory.textbuffer,"Established connection UID " + str(ID) + "\n", LOG_CONN)
+        addText(self.factory.textbuffer, _("Established connection UID %s\n") % (ID,), LOG_CONN)
 
         IP = self.transport.getPeer()
         IP = IP.host
         welcome = self.factory.welcome
         msg = "UID " + str(ID) + " " + str(registeredUsers) + " " + str(onlineUsers) + " " + IP
-        msg2 = "Currently there are " + str(onlineUsers) + " users online and " + str(registeredUsers) + " known users. " + time.ctime() + " Last user connected: " + str(ID) + " (" + IP + ")"
+        msg2 = _("Currently there are %s users online and %s known users. %s Last user connected: %s (%s)") % (onlineUsers, registeredUsers, time.ctime(), ID, IP)
         welcome += "\r\n\r\n" + msg +"\r\n"
         self.transport.write(welcome)
 
@@ -67,14 +97,14 @@ class RPG(Protocol):
             addText(self.factory.textbuffer, "UID" + str(self.ID) + " : " +  data, LOG_RECV)
             if data[0:4] != "USER":
                 self.transport.loseConnection()
-                addText(self.factory.textbuffer, "Dropping user UID " +str( self.ID) + " unknown protocol", LOG_ERR)
+                addText(self.factory.textbuffer, "Dropping user UID " + str(self.ID) + " unknown protocol", LOG_ERR)
             else:
                 data = data.split("\r\n")
                 data = data[0].split(" ")
                 try:
                     name = data[1]
                     if name == "":
-                        self.transport.write("USER Fault"+ "\r\n")
+                        self.transport.write("USER Fault" + "\r\n")
                         addText(self.factory.textbuffer, "UID" + str(self.ID) + " USER Fault", LOG_ERR)
                     else:
                         if self.factory.users.addName(self.ID, name):
@@ -102,9 +132,9 @@ class RPG(Protocol):
         registeredUsers = self.factory.users.regUsers()
         IP = self.transport.getPeer()
         IP = IP.host
-        msg2 = "Currently there are " + str(onlineUsers) + " users online and " + str(registeredUsers) + " known users. " + time.ctime() + " Last user disconnected: " + str(ID) + " (" + IP + ")"
+        msg2 = _("Currently there are %s users online and %s known users. %s Last user disconnected: %s (%s)") % (onlineUsers, registeredUsers, time.ctime(), ID, IP)
         messageid = self.factory.statusbar[0].push(self.factory.statusbar[1], msg2)
-        addText(self.factory.textbuffer,"Lost connection: \n" + str(reason), LOG_CONN)
+        addText(self.factory.textbuffer, _("Lost connection: \n") + str(reason), LOG_CONN)
         self.broadcast("EXIT UID " + str(ID))
         self.factory.clients.remove(self)
 
@@ -157,13 +187,15 @@ class RPG(Protocol):
                 offline = False
             msg = ""
             for user in self.factory.users.users:
-                if user.online : online = "Online"
-                else: online = "Offline"
+                if user.online:
+                    online = "Online"
+                else:
+                    online = "Offline"
                 if offline:
-                    msg += "USERLIST\t" + str(user.ID) +"\t" + user.name + "\t[" + online +"]\r\n"
+                    msg += "USERLIST\t" + str(user.ID) + "\t" + user.name + "\t[" + online + "]\r\n"
                 else:
                     if user.online:
-                        msg += "USERLIST\t" + str( user.ID) +"\t" + user.name + "\t[" + online +"]\r\n"
+                        msg += "USERLIST\t" + str( user.ID) + "\t" + user.name + "\t[" + online + "]\r\n"
             self.transport.write(msg)
             addText(self.factory.textbuffer, self.name + " " +msg + "\r\n", LOG_SEND)
         elif command == "SERV":
@@ -293,15 +325,15 @@ class GUI:
         table = gtk.Table(11,7,True)
         self.window.add(table)
 
-        label = gtk.Label("Port:")
+        label = gtk.Label(_("Port:"))
         label.set_justify(gtk.JUSTIFY_LEFT)
         table.attach(label, 0, 1, 0, 1)
         label.show()
-        label = gtk.Label("Welcome message:")
+        label = gtk.Label(_("Welcome message:"))
         label.set_justify(gtk.JUSTIFY_LEFT)
         table.attach(label, 0, 1, 1,2)
         label.show()
-        label = gtk.Label("Game Map:")
+        label = gtk.Label(_("Game Map:"))
         label.set_justify(gtk.JUSTIFY_LEFT)
         table.attach(label, 0, 1, 2, 3)
         label.show()
@@ -343,30 +375,30 @@ class GUI:
         textview.show()
         table.attach(sw, 0, 7, 4, 10)
 
-        button = gtk.Button("Start Service")
+        button = gtk.Button(_("Start Service"))
         button.connect("clicked", self.startService, porttext, textbuffer, textbufferWelcome)
         table.attach(button, 2,3,0,1, gtk.FILL,0)
         button.show()
 
-        button = gtk.Button("Browse")
+        button = gtk.Button(_("Browse"))
         button.connect("clicked", self.startService, porttext, textbuffer)
         table.attach(button, 2,3,2,3, gtk.FILL,0)
         button.show()
 
-        frame1 = gtk.Frame("Server options")
+        frame1 = gtk.Frame(_("Server options"))
         frame1.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         frame1.set_label_align(0.0, 0.0)
         table.attach(frame1,0,4,0,3)
         frame1.show()
 
 
-        frame2 = gtk.Frame("Log options")
+        frame2 = gtk.Frame(_("Log options"))
         frame2.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
         frame2.set_label_align(1.0, 0.0)
         table.attach(frame2, 4,7,0,3)
         frame2.show()
 
-        label = gtk.Label("Display options:")
+        label = gtk.Label(_("Display options:"))
         table.attach(label, 4,5, 0,1)
         label.show()
 
@@ -405,9 +437,9 @@ def main():
 
 def startService(textbuffer,port, welcome, statusbar):
     addText(textbuffer, APP_NAME, LOG_INFO)
-    addText(textbuffer, "Version " + APP_VERSION, LOG_INFO)
-    addText(textbuffer, "Attempting to start server at port " +str(port)+ "\n", LOG_INFO)
-    addText(textbuffer, "Creating Factory", LOG_INFO)
+    addText(textbuffer, _("Version ") + APP_VERSION, LOG_INFO)
+    addText(textbuffer, _("Attempting to start server at port ") +str(port)+ "\n", LOG_INFO)
+    addText(textbuffer, _("Creating Factory"), LOG_INFO)
 
     factory = Factory()
     factory.protocol = RPG
@@ -415,14 +447,14 @@ def startService(textbuffer,port, welcome, statusbar):
     factory.statusbar = statusbar
     factory.clients = []
 
-    addText(textbuffer, "Saving welcome message...", LOG_INFO)
+    addText(textbuffer, _("Saving welcome message..."), LOG_INFO)
     factory.welcome = welcome
     f = open(PATH_WELCOME_MSG, "w")
     f.write(welcome)
     f.close()
-    addText(textbuffer, "Setting up Users datastructure", LOG_INFO)
+    addText(textbuffer, _("Setting up Users datastructure"), LOG_INFO)
     factory.users = Users()
-    addText(textbuffer, "Listening for incoming connections...", LOG_INFO)
+    addText(textbuffer, _("Listening for incoming connections..."), LOG_INFO)
     reactor.listenTCP(port, factory)
     reactor.run()
 
