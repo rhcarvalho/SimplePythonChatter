@@ -8,8 +8,7 @@ from twisted.internet import reactor
 from serverVars import *
 from serverVars import _
 
-from User import User
-from Users import Users
+from users import User, Users
 
 
 class RPG(Protocol):

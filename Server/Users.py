@@ -1,5 +1,49 @@
-# -*- coding: utf-8 -*-
-from User import User
+﻿# -*- coding: utf-8 -*-
+from datetime import datetime
+
+
+class _User:
+    """Represent an user"""
+    def __init__(self, id, name):
+        """Create a user"""
+        self.id = id
+        self.name = name
+        self.created = datetime.now()
+
+
+class _UserManager:
+    """Manage a group of users"""
+    __id_counter = 0
+
+    def __init__(self):
+        """Create a new UserManager"""
+        self.users = {}
+
+    def add(self, name):
+        """Add a new user registered under the given name."""
+        id = self.getID()
+        self.users[id] = User(id, name)
+
+    def remove(self, id):
+        """Remove the user registered under the given id.
+
+        Will pass silently if there is no user with the given id.
+        """
+        self.users.pop(id, None)
+
+    def getID(self):
+        """Return an appropriate id for a new user"""
+        self.__id_counter += 1
+        return self.__id_counter
+
+
+class User:
+
+    def __init__(self, ID):
+        self.name = ""
+        self.loggedIN = False
+        self.online = True
+        self.ID = ID
 
 
 class Users:
