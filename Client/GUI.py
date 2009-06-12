@@ -228,13 +228,6 @@ class GUI:
         cell.set_property('pixbuf', pb)
         return
 
-    def updateMap(self, widget):
-        self.log.log("Looking for updates...")
-        self.messages.addmsg("/COMMAND GAME")
-
-    def joinGame(self, widget):
-        self.log.log("Joining game...")
-        self.messages.addmsg("/COMMAND JOIN GAME")
 
 def startGUI(msgObject):
     GUI(msgObject)
