@@ -156,12 +156,6 @@ class RPG(Protocol):
                 msg = "JOIN Fault ServiceNotKnown"
                 self.transport.write(msg + "\r\n\r\n")
                 addText(self.factory.textbuffer, self.name + " " + msg, LOG_ERR)
-        elif command == "MAP":
-            path = PATH_DEFAULT_MAP
-            f = open (path, "r")
-            msg = f.read()
-            self.transport.write("MAP OK " + msg + "\r\n\r\n")
-            addText(self.factory.textbuffer, self.name + " " +msg, LOG_SEND)
         elif command == "MSG":
             try:
                 serv = dataSpaceSplit[1].upper()

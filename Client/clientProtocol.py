@@ -109,39 +109,7 @@ class clientProtocol(Protocol):
                     self.factory.log.log(self.factory.Users.getName(params[3]) + msg[3:], LOG_MSG)
                 else:
                     self.factory.log.log(self.factory.Users.getName(params[3]) + " >>> " + msg, LOG_MSG)
-            elif data[0:8] == "GAME OK ":
-                block = data.split("\r\n\r\n")
-                params = block[0].split(" ")
-                try:
-                    m = params[2]
-                    self.factory.log.log("Current server map is: " + unquote_plus(m))
-                    f = open("maps/knownmaps")
-                    knownmaps = f.read()
-                    maps = knownmaps.split("\n")
-                    mFound = False
-                    self.map = m
-                    for map in maps:
-                        if map == m:
-                            self.factory.log.log("Your map is up to date!")
-                            mFound = True
-                            f.close()
-                    if not mFound:
-                        self.factory.log.log("Retreiving map..")
-                        f.close()
-                        self.sendMsg("MAP")
-                except:
-                    self.factory.log.log("Couldn't verify which map is in use", LOG_ERR)
-            elif data[0:7] == "MAP OK ":
-                map = data.split("\r\n\r\n")
-                map = map[0]
-                map = map[7:]
-                f = open ("maps/" + self.map, "w")
-                f.write(map)
-                f.close()
-                f = open("maps/knownmaps", "a")
-                f.write(self.map + "\n")
-                f.close()
-                self.factory.log.log(self.map + " has been updated!")
+
             else:
                 self.factory.log.log("[" + str(self.factory.pid) + "] " +data, LOG_ERR)
 
