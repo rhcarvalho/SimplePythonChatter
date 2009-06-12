@@ -241,3 +241,18 @@ def startService(textbuffer, port, welcome, statusbar):
     addText(textbuffer, _("Listening for incoming connections..."), LOG_INFO)
     reactor.listenTCP(port, factory)
     reactor.run()
+
+
+from twisted.protocols.basic import LineReceiver
+
+
+class SimpleChatProtocol(LineReceiver):
+
+    def connectionMade(self):
+        pass
+
+    def connectionLost(self, reason):
+        pass
+
+    def lineReceived(self, line):
+        pass
