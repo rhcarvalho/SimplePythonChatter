@@ -60,7 +60,7 @@ class GUI:
         table.attach(porttext, 1, 2, 0, 1)
         porttext.show()
 
-        sw =gtk.ScrolledWindow()
+        sw = gtk.ScrolledWindow()
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
         sw.set_shadow_type(gtk.SHADOW_IN)
         textview = gtk.TextView()

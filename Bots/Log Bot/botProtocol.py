@@ -8,7 +8,7 @@ from urllib import quote_plus, unquote_plus
 from Users import Users, User
 
 class clientProtocol(Protocol):
-	
+
 	def connectionMade(self):
 		self.factory.log.log("You are connected to the server!\n", LOG_CONN)
 		self.init = True
@@ -16,15 +16,15 @@ class clientProtocol(Protocol):
 		self.pm = 0;
 		d = self.sendMessages();
 		d.addCallback(self.sendMessages);
-		
-		
+
+
 	def dataReceived(self, data):
 		if self.init:
 			self.factory.log.log("********** SERVER MESSAGE **********", LOG_SERVER)
 			block = data.split("\r\n\r\n")
 			welcome = block[0]
 			self.factory.log.log(welcome, LOG_SERVER)
-			
+
 			connData = block[1]
 			connData = connData.split("\r\n");
 			for lines in connData:
@@ -56,17 +56,17 @@ class clientProtocol(Protocol):
 					if name[0] == self.factory.alias:
 						self.sendMsg("USERLIST")
 				except:
-					name[0]= "NameNotSet";	
+					name[0] = "NameNotSet";
 				self.factory.Users.addUser(ID, name[0], True)
 			elif data[0:8] == "USERLIST":
-				lines =data.split("\r\n");
+				lines = data.split("\r\n");
 				for block in lines:
 					params = block.split("\t")
 					try:
 						ID = params[1]
 					except:
 						ID = -1;
-					try: 
+					try:
 						name = params[2]
 					except:
 						name = "NameNotSet";
@@ -95,7 +95,7 @@ class clientProtocol(Protocol):
 					self.factory.log.log(fromUser + " >>> " + msg, LOG_PM_RECV)
 				else:
 					self.factory.log.log(toUser + " <<<" +  msg, LOG_PM_SENT)
-			
+
 			elif data[0:13] == "MSG CHAT UID ":
 				block = data.split("\r\n\r\n")
 				params = block[0].split(" ")
@@ -112,7 +112,7 @@ class clientProtocol(Protocol):
 				try:
 					m = params[2]
 					self.factory.log.log("Current server map is: " + unquote_plus(m))
-					f= open("maps/knownmaps")
+					f = open("maps/knownmaps")
 					knownmaps = f.read()
 					maps = knownmaps.split("\n")
 					mFound = False
@@ -132,7 +132,7 @@ class clientProtocol(Protocol):
 				map = data.split("\r\n\r\n")
 				map = map[0]
 				map = map[7:]
-				f= open ("maps/" + self.map, "w")
+				f = open ("maps/" + self.map, "w")
 				f.write(map)
 				f.close()
 				f = open("maps/knownmaps", "a")
@@ -141,13 +141,13 @@ class clientProtocol(Protocol):
 				self.factory.log.log(self.map + " has been updated!")
 			else:
 				self.factory.log.log("[" + str(self.factory.pid) + "] " +data, LOG_ERR)
-	
+
 	def connectionLost(self, reason):
 		self.factory.log.log("\n\n===Lost connection to the server ===", LOG_CONN);
 		self.factory.Users.clear()
-		
+
 	def sendMessages(self):
-		d= defer.Deferred()
+		d = defer.Deferred()
 		msglen = len(self.factory.messages.messages);
 		pmlen = len(self.factory.messages.privateMessages);
 		if msglen != self.message:
@@ -169,15 +169,15 @@ class clientProtocol(Protocol):
 			d.callback("SEND MESSAGES")
 		reactor.callLater(CHECK_FOR_MESSAGES_TO_SEND_TIMEOUT, self.sendMessages);
 		return d;
-		
+
 	def sendMsg(self, msg):
 		self.factory.pid += 1
 		self.transport.write(msg + "\r\n\r\n")
-		
+
 class clientProtocolFactory(ClientFactory):
-	
+
 	protocol = clientProtocol
-	
+
 	def __init__(self, log, alias, msgObject):
 		self.log = log
 		self.messages = msgObject
@@ -185,15 +185,15 @@ class clientProtocolFactory(ClientFactory):
 		self.pid = 1
 		self.Users = Users();
 		self.Users.addUser("1", alias);
-	
+
 	def clientConnectionFailed(self, reason, bla):
 		self.log.log("Couldn't connect...\n", LOG_ERR)
 
-def runReactor(host, port, log, alias, msgObject):	
+def runReactor(host, port, log, alias, msgObject):
 	f = clientProtocolFactory(log, alias, msgObject)
 	reactor.connectTCP(host, port, f)
 	reactor.run()
 
 def stopReactor():
 	reactor.stop()
-	
+

@@ -59,7 +59,7 @@ class clientProtocol(Protocol):
                     if name[0] == self.factory.alias:
                         self.sendMsg("USERLIST")
                 except:
-                    name[0]= "NameNotSet"
+                    name[0] = "NameNotSet"
                 self.factory.Users.addUser(ID, name[0], True)
             elif data[0:8] == "USERLIST":
                 lines = data.split("\r\n")
