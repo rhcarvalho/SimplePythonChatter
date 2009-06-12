@@ -12,7 +12,7 @@ from serverVars import _
 class GUI:
     def startService(self, widget, porttext, textbuffer, wtextbuffer):
         welcome = wtextbuffer.get_text(wtextbuffer.get_start_iter(), wtextbuffer.get_end_iter())
-        startService(textbuffer,int(porttext.get_text()), welcome, (self.statusbar, self.context_id))
+        startService(textbuffer, int(porttext.get_text()), welcome, (self.statusbar, self.context_id))
 
     def close_application(self, widget):
         try:
@@ -28,7 +28,7 @@ class GUI:
         self.window.set_title(APP_NAME + " " + APP_VERSION)
         self.window.set_border_width(20)
 
-        table = gtk.Table(11,7,True)
+        table = gtk.Table(11, 7, True)
         self.window.add(table)
 
         label = gtk.Label(_("Port:"))
@@ -37,7 +37,7 @@ class GUI:
         label.show()
         label = gtk.Label(_("Welcome message:"))
         label.set_justify(gtk.JUSTIFY_LEFT)
-        table.attach(label, 0, 1, 1,2)
+        table.attach(label, 0, 1, 1, 2)
         label.show()
 
         f = open(PATH_WELCOME_MSG)

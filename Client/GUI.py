@@ -140,13 +140,13 @@ class GUI:
 
         f = gtk.Frame(_("Chat"))
         f.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
-        f.set_label_align(0.0,0.0)
+        f.set_label_align(0.0, 0.0)
         self.table.attach(f, 0, 4, 5, 18)
         f.show()
 
         f = gtk.Frame(_("Users"))
         f.set_shadow_type(gtk.SHADOW_ETCHED_OUT)
-        f.set_label_align(0.0,0.0)
+        f.set_label_align(0.0, 0.0)
         self.table.attach(f, 4, 6, 0, 18)
         f.show()
 
@@ -189,7 +189,7 @@ class GUI:
             treeselection = self.treeview.get_selection()
             (model, treeiter) = treeselection.get_selected()
             treeiter = self.tm.convert_iter_to_child_iter(None, treeiter)
-            name = self.treestore.get_value(treeiter,0)
+            name = self.treestore.get_value(treeiter, 0)
             if name[0:5] != _(" ID: ") and name[0:14] != _(" Known Since: "):
                 pm = privateMessage(str(name[2:]), self.messages, self.log)
 

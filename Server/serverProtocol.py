@@ -219,7 +219,7 @@ def addText(textbuffer, text, log=LOG_INFO):
     textbuffer.apply_tag(tag, startiter, enditer)
 
 
-def startService(textbuffer,port, welcome, statusbar):
+def startService(textbuffer, port, welcome, statusbar):
     addText(textbuffer, APP_NAME, LOG_INFO)
     addText(textbuffer, _("Version ") + APP_VERSION, LOG_INFO)
     addText(textbuffer, _("Attempting to start server at port ") + str(port) + "\n", LOG_INFO)
