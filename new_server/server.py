@@ -8,29 +8,6 @@ from users import UserManager
 _ = lambda m: m
 
 
-##
-##        status_message = (_("Currently there are %s users online and %s known "
-##                            "users.\nLast user connected at %s: UID=<%s>, IP=<%s>") %
-##                           (online_users, known_users, user.created, user.id, user.ip))
-
-
-
-class FingerProtocol(basic.LineReceiver):
-    def lineReceived(self, user):
-        self.factory.getUser(user
-        ).addErrback(lambda _: "Internal error in server"
-        ).addCallback(lambda m:
-        (self.transport.write(m+"\r\n"),
-        self.transport.loseConnection()))
-
-class FingerFactory(protocol.ServerFactory):
-    protocol = FingerProtocol
-    def __init__(self, **kwargs): self.users = kwargs
-    def getUser(self, user):
-        return defer.succeed(self.users.get(user, "No such user"))
-
-
-
 class SimpleChatProtocol(LineReceiver):
 
     def connectionMade(self):
